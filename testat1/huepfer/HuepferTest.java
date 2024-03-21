@@ -1,7 +1,10 @@
+package huepfer;
+
 import static org.junit.Assert.assertEquals;
 
 import java.awt.Graphics;
 
+import huepfer.BufferedGraphics;
 import org.junit.Test;
 
 public class HuepferTest {

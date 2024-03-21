@@ -1,3 +1,5 @@
+package huepfer;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -28,14 +30,14 @@ class HuepferPanel extends JPanel {
 		Huepfer h = new Huepfer(graphics, //
 				width, //
 				height, //
-				-4.0, // xMin
-				5.0, // xMax
-				-4.0, // yMin
-				5.0, // yMax
-				0.4, // a
-				1.0, // b
-				0.0, // c
-				1_000_000 // num
+				-150.0, // xMin
+				500.0, // xMax
+				-150.0, // yMin
+				500.0, // yMax
+				366.0, // a
+				0.07, // b
+				50.0, // c
+				1000000 // num
 		);
 		h.render();
 	}

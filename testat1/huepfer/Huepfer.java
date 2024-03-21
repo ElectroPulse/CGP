@@ -1,3 +1,5 @@
+package huepfer;
+
 import java.awt.Color;
 import java.awt.Graphics;
 
@@ -58,7 +60,7 @@ class Huepfer {
 	 * @return GKOS-Koordinate
 	 */
 	int transformX(double x) {
-		return (int) (width/(xMax-xMin)*(x-xMin));
+		return (int) (width / (xMax - xMin) * (x - xMin));
 	}
 
 	/**
@@ -68,18 +70,28 @@ class Huepfer {
 	 * @return GKOS-Koordinate
 	 */
 	int transformY(double y) {
-		return (int) (width/(yMin-yMax)*(y-yMax));
+		return (int) ( width / (yMin - yMax) * (y - yMax));
+	}
+
+	void changeColor() {
+		int red = (int) (Math.random() * 255);
+		int green = (int) (Math.random() * 255);
+		int blue = (int) (Math.random() * 255);
+		graphics.setColor(new Color(red, green, blue));
 	}
 
 	public void render() {
-		int x = 0;
-		int y = 0;
+		double x = 0, y = 0;
 		for (int i = 0; i < num; i++) {
-			setPixel(x, y);
-			double xx = y-Math.signum(x)*Math.sqrt(Math.abs(b*x-c));
-			double yy = a-x;
-			x = transformX(xx);
-			y = transformY(yy);
+			if (i % 100 == 0)
+				changeColor();
+			setPixel(transformX(x), transformY(y));
+
+			double xx = y - Math.signum(x) * Math.sqrt(Math.abs(b * x - c));
+			double yy = a - x;
+
+			x = xx;
+			y = yy;
 		}
 	}
 }
