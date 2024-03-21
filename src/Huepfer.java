@@ -72,6 +72,14 @@ class Huepfer {
 	}
 
 	public void render() {
-		// TODO Ihre Implementierung des Hüpfer-Algorithmus ...
+		int x = 0;
+		int y = 0;
+		for (int i = 0; i < num; i++) {
+			setPixel(x, y);
+			double xx = y-Math.signum(x)*Math.sqrt(Math.abs(b*x-c));
+			double yy = a-x;
+			x = transformX(xx);
+			y = transformY(yy);
+		}
 	}
 }
