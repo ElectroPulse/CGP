@@ -58,10 +58,10 @@ public class Lines {
 	 */
 	void drawDda(int x0, int y0, int x1, int y1) {
 		int m = ((y1 - y0) << SHIFT) / (x1 - x0);
-		int y = y0 << SHIFT;
+		int y = (y0 << SHIFT) + GAMMA;
 		for (int x = x0; x <= x1; x++) {
 			setPixel(x, y >> SHIFT);
-			y += m;
+			y = y + m;
 		}
 	}
 
@@ -78,11 +78,11 @@ public class Lines {
 		int x = x0, y = y0;
 		setPixel(x0, y0);
 		while (x < x1) {
-			if (d <= 0) {
-				d += incrE;
+			if (d < 0) {
+				d = d + incrE;
 				x++;
 			} else {
-				d += incrNE;
+				d = d + incrNE;
 				x++;
 				y++;
 			}
