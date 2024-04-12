@@ -40,7 +40,7 @@ public class Lines {
 		double b = y0 - m * x0;
 		for (int x = x0; x <= x1; x++) {
 			int y = (int) (m * x + b);
-			setPixel(x, Math.round(y));
+			setPixel(x, y);
 		}
 	}
 
