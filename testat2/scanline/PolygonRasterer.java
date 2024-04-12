@@ -1,3 +1,5 @@
+package scanline;
+
 import java.awt.Graphics;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -26,7 +28,38 @@ public class PolygonRasterer {
 	 * Umsetzung des Scan-Line-Verfahrens
 	 */
 	public void rasterize() {
-		// TODO: Ihr Code hier...
+		for (int y = 0; y < height; y++) {
+			// 1. Alle Kanten, die die aktuelle y-Koordinate schneiden, in die Active Edge Table aufnehmen
+			for (Edge edge : edgeTable) {
+				if (edge.getYMin() == y) {
+					activeEdgeTable.add(new Edge(edge));
+				}
+			}
+
+			// 2. Kanten in der Active Edge Table sortieren
+			activeEdgeTable.sort(Comparator.comparing(Edge::getxIntersect));
+
+			// 3. Kantenpaare abarbeiten
+			for (int i = 0; i < activeEdgeTable.size(); i += 2) {
+				Edge edge1 = activeEdgeTable.get(i);
+				Edge edge2 = activeEdgeTable.get(i + 1);
+				// 4. Kantenpaar zeichnen
+				graphics.drawLine((int) edge1.getxIntersect(), y, (int) edge2.getxIntersect(), y);
+			}
+			// 5. Kanten aus der Active Edge Table entfernen, die die aktuelle y-Koordinate verlassen
+			LinkedList<Edge> edgesToRemove = new LinkedList<>();
+			for (Edge edge : activeEdgeTable) {
+				if (edge.getyMax() == y) {
+					edgesToRemove.add(edge);
+				}
+			}
+			activeEdgeTable.removeAll(edgesToRemove);
+
+			// 6. x-Koordinaten der verbleibenden Kanten aktualisieren
+			for (Edge edge : activeEdgeTable) {
+				edge.setxIntersect(edge.getxIntersect() + edge.getmReci());
+			}
+		}
 	}
 
 	public void setGraphics(Graphics graphics) {

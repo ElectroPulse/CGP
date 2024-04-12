@@ -1,3 +1,5 @@
+package scanline;
+
 import java.util.LinkedList;
 
 /**

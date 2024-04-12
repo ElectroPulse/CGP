@@ -1,3 +1,5 @@
+package scanline;
+
 public class Edge {
 	/** y-Koordinate des unteren Eckpunkts der Kante */
 	private int yMin;

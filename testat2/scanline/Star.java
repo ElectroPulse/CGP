@@ -1,3 +1,5 @@
+package scanline;
+
 /**
  * Sternen-Polygon
  */
