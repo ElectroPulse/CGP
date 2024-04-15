@@ -82,24 +82,59 @@ public class CohenSutherland {
 	 * @param yE y-Koordinate Endpunkt Linie
 	 */
 	void clipLine(int xA, int yA, int xE, int yE) {
+
 		if (outputCode(xA, yA) == 0 && outputCode(xE, yE) == 0) {
 			// Linie komplett sichtbar
-			graphics.setColor(Color.GREEN);
-			graphics.drawLine(xA, yA, xE, yE);
+			drawGreen(xA, yA, xE, yE);
 			return;
 		}
+
 		if ((outputCode(xA, yA) & outputCode(xE, yE)) != 0) {
 			// Linie komplett unsichtbar
-			graphics.setColor(Color.GRAY);
-			graphics.drawLine(xA, yA, xE, yE);
+			drawGrey(xA, yA, xE, yE);
 			return;
 		}
-		// Linie teilweise sichtbar
-		if (outputCode(xA,yA) &= Area.GTYMAX )
-		int x1 = (xE - xA) / (yE - yA) * (ymax - yE) + xE; // (x,y) = (x1,ymax)
-		int x2 = (xE - xA) / (yE - yA) * (ymin - yE) + xE; // (x,y) = (x2,ymin)
-		int y1 = (yE - yA) / (xE - xA) * (xmax - xE) + yE; // (x,y) = (xmax,y1)
-		int y2 = (yE - yA) / (xE - xA) * (xmin - xE) + yE; // (x,y) = (xmin,y2)
 
+		// Linie teilweise sichtbar
+		// (xA,yA) ist oberhalb des Clipping-Rechtecks ymax
+		if (Area.GTYMAX == (outputCode(xA,yA) & Area.GTYMAX)) {
+			// Schnittpunkt mit ymax berechnen
+			int x1 = (xE - xA) / (yE - yA) * (ymax - yE) + xE; // (x,y) = (x1,ymax)
+			int y1 = ymax;
+		}
+
+		// (xA,yA) ist unterhalb des Clipping-Rechtecks ymin
+		if (Area.LTYMIN == (outputCode(xA,yA) & Area.LTYMIN)) {
+			// Schnittpunkt mit ymin berechnen
+			int x2 = (xE - xA) / (yE - yA) * (ymin - yE) + xE; // (x,y) = (x2,ymin)
+			int y2 = ymin;
+		}
+
+		// (xA,yA) ist rechts des Clipping-Rechtecks xmax
+		if (Area.GTXMAX == (outputCode(xA,yA) & Area.GTXMAX)) {
+			// Schnittpunkt mit xmax berechnen
+			int x3 = xmax;
+			int y3 = (yE - yA) / (xE - xA) * (xmax - xE) + yE; // (x,y) = (xmax,y1)
+		}
+
+		// (xA,yA) ist links des Clipping-Rechtecks xmin
+		if (Area.LTXMIN == (outputCode(xA,yA) & Area.LTXMIN)) {
+			// Schnittpunkt mit xmin berechnen
+			int x4 = xmin;
+			int y4 = (yE - yA) / (xE - xA) * (xmin - xE) + yE; // (x,y) = (xmin,y2)
+		}
+
+		graphics.setColor(Color.BLUE);
+		graphics.drawLine(xA, yA, xE, yE);
+	}
+
+	private void drawGrey(int xA, int yA, int xE, int yE) {
+		graphics.setColor(Color.GRAY);
+		graphics.drawLine(xA, yA, xE, yE);
+	}
+
+	private void drawGreen(int xA, int yA, int xE, int yE) {
+		graphics.setColor(Color.GREEN);
+		graphics.drawLine(xA, yA, xE, yE);
 	}
 }
