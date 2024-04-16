@@ -87,48 +87,45 @@ public class CohenSutherland {
         // Output-Codes für Anfangs- und Endpunkt berechnen
         int ap = outputCode(xA, yA);
         int ep = outputCode(xE, yE);
-        drawGrey(xA, yA, xE, yE);
         if ((ap | ep) == 0) {
             // Linie komplett sichtbar
             drawGreen(xA, yA, xE, yE);
         } else if ((ap & ep) != 0) {
             // Linie komplett unsichtbar
-            drawGrey(xA, yA, xE, yE);
         } else {
             // Linie teilweise sichtbar
-            if (Area.GTYMAX == (ap & Area.GTYMAX)) {    // yMax
-                // Punkt A ist ausserhalb, Punkt E innerhalb des Clipping-Rechtecks
-                int newX = (int) (((float) (xE - xA) / (yE - yA)) * (ymax - yE) + xE);
-                int newY = ymax;
-                clipLine(xE, yE, newX, newY);
+            if (ap != 0 || ep == 0) {
+                if (Area.GTYMAX == (ap & Area.GTYMAX)) {    // yMax
+                    // Punkt A ist ausserhalb, Punkt E innerhalb des Clipping-Rechtecks
+                    int newX = (int) (((float) (xE - xA) / (yE - yA)) * (ymax - yE) + xE);
+                    int newY = ymax;
+                    clipLine(xE, yE, newX, newY);
 
-            } else if (Area.LTYMIN == (ap & Area.LTYMIN)) {   // yMin
-                // Punkt A ist ausserhalb, Punkt E innerhalb des Clipping-Rechtecks
-                int newX = (int) (((float) (xE - xA) / (yE - yA)) * (ymin - yE) + xE);
-                int newY = ymin;
-                clipLine(xE, yE, newX, newY);
-            }
+                } else if (Area.LTYMIN == (ap & Area.LTYMIN)) {   // yMin
+                    // Punkt A ist ausserhalb, Punkt E innerhalb des Clipping-Rechtecks
+                    int newX = (int) (((float) (xE - xA) / (yE - yA)) * (ymin - yE) + xE);
+                    int newY = ymin;
+                    clipLine(xE, yE, newX, newY);
+                }
 
 
-            if (Area.GTXMAX == (ap & Area.GTXMAX)) {    // xMax
-                // Punkt A ist ausserhalb, Punkt E innerhalb des Clipping-Rechtecks
-                int newX = xmax;
-                int newY = (int) ((float) (yE - yA) / (xE - xA)) * (xmax - xE) + yE;
-                clipLine(newX, newY, xE, yE);
+                if (Area.GTXMAX == (ap & Area.GTXMAX)) {    // xMax
+                    // Punkt A ist ausserhalb, Punkt E innerhalb des Clipping-Rechtecks
+                    int newX = xmax;
+                    int newY = (int) (((float) (yE - yA) / (xE - xA)) * (xmax - xE) + yE);
+                    clipLine(xE, yE, newX, newY);
 
-            } else if (Area.LTXMIN == (ap & Area.LTXMIN)) {  // xMin
-                // Punkt A ist ausserhalb, Punkt E innerhalb des Clipping-Rechtecks
-                int newX = xmin;
-                int newY = (int) ((float) (yE - yA) / (xE - xA)) * (xmin - xE) + yE;
-                clipLine(newX, newY, xE, yE);
+                } else if (Area.LTXMIN == (ap & Area.LTXMIN)) {  // xMin
+                    // Punkt A ist ausserhalb, Punkt E innerhalb des Clipping-Rechtecks
+                    int newX = xmin;
+                    int newY = (int) (((float) (yE - yA) / (xE - xA)) * (xmin - xE) + yE);
+                    clipLine(xE, yE, newX, newY);
 
+                }
+            } else if (ep != 0) {
+                clipLine(xE, yE, xA, yA);
             }
         }
-    }
-
-    private void drawGrey(int xA, int yA, int xE, int yE) {
-        graphics.setColor(Color.GRAY);
-        graphics.drawLine(xA, yA, xE, yE);
     }
 
     private void drawGreen(int xA, int yA, int xE, int yE) {
