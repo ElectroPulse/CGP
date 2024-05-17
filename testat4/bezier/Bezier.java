@@ -39,7 +39,7 @@ class Bezier
         {
             for (int i = k; i < points.size(); i++)
             {
-                P[i][k] = new Point((1 - t), P[k - 1][i - 1], t, P[k - 1][i]);
+                P[k][i] = new Point((1 - t), P[k - 1][i - 1], t, P[k - 1][i]);
             }
         }
         return P[points.size() - 1][points.size() - 1];
@@ -52,6 +52,11 @@ class Bezier
      */
     void render(Graphics graphics)
     {
-        // TODO: Hier Ihr Code...
+        for (double i = 0; i < 1; i+=h)
+        {
+            Point p1 = casteljau(i);
+            Point p2 = casteljau(i+h);
+            graphics.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
+        }
     }
 }
