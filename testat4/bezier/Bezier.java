@@ -52,14 +52,14 @@ class Bezier
      */
     void render(Graphics graphics)
     {
-        Point p1 = points.getFirst();
+        Point p1 = points.get(0);
         for (double i = 0; i < 1; i += h)
         {
             Point p2 = casteljau(i);
             graphics.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
             p1 = p2;
         }
-        Point p2 = points.getLast();
+        Point p2 = points.get(points.size() - 1);
         graphics.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
 
     }
