@@ -48,7 +48,12 @@ abstract class BSpline
      */
     void render(Graphics graphics)
     {
-        // TODO: Ihr Code hier
+        for (double i = knotVector[k - 1]; i < knotVector[points.size() - k - 1]; i += h)
+        {
+            Point p1 = bSpline(i);
+            Point p2 = bSpline(i + h);
+            graphics.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
+        }
     }
 
     /**
@@ -60,8 +65,18 @@ abstract class BSpline
      */
     Point bSpline(double t)
     {
-        // TODO: Ihr Code hier
-        return null;
+        Point p = points.get(0);
+        for (int i = 0; i < points.size(); i++)
+        {
+            if (t < knotVector[i] || t > knotVector[i + k])
+            {
+                continue;
+            }
+            {
+                p = new Point(1, p, nik(i, k, t), points.get(i));
+            }
+        }
+        return p;
     }
 
     /**
@@ -74,10 +89,10 @@ abstract class BSpline
      */
     double nik(int i, int k, double t)
     {
-        double nik[][] = new double[k + 1][k + 1];
-        for (int step = 0; step < k; step++)
+        double nik[][] = new double[knotVector.length][knotVector.length];
+        for (int step = i; step < knotVector.length; step++)
         {
-            nik[i + step][1] = (knotVector[i + step] <= t && t < knotVector[i + step + 1]) ? 1 : 0;
+            nik[step][1] = (knotVector[step] <= t && t < knotVector[step + 1]) ? 1 : 0;
         }
         for (int k_step = 2; k_step <= k; k_step++)
         {
