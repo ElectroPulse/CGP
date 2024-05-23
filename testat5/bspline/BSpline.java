@@ -48,12 +48,16 @@ abstract class BSpline
      */
     void render(Graphics graphics)
     {
-        for (double i = knotVector[k - 1]; i < knotVector[points.size() - k - 1]; i += h)
+        // TODO: Fix "Draws wrong with huge offset"
+        Point p2 = points.get(0);
+        for (double i = knotVector[k - 1]; i < knotVector[knotVector.length - k + 1]; i += h)
         {
             Point p1 = bSpline(i);
-            Point p2 = bSpline(i + h);
+            p2 = bSpline(i + h);
             graphics.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
         }
+        Point p3 = bSpline(knotVector[knotVector.length - k + 1]);
+        graphics.drawLine((int) p2.x, (int) p2.y, (int) p3.x, (int) p3.y);
     }
 
     /**
@@ -89,7 +93,7 @@ abstract class BSpline
      */
     double nik(int i, int k, double t)
     {
-        double nik[][] = new double[knotVector.length][knotVector.length];
+        double[][] nik = new double[knotVector.length][knotVector.length];
         for (int step = i; step < knotVector.length; step++)
         {
             nik[step][1] = (knotVector[step] <= t && t < knotVector[step + 1]) ? 1 : 0;
